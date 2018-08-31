@@ -53,5 +53,6 @@ dependencies {
   //compile project(':animators')
   implementation "com.android.support:appcompat-v7:${SUPPORT_PACKAGE_VERSION}"
   implementation "com.android.support:recyclerview-v7:${SUPPORT_PACKAGE_VERSION}"
-  implementation 'com.squareup.picasso:picasso:2.5.2'
+  implementation 'com.squareup.picasso:picasso:2.71828'
+  compile project(path: ':animators')
 }
