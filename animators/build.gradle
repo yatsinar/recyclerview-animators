@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
 
 android {
   compileSdkVersion COMPILE_SDK_VERSION as int
@@ -11,6 +12,8 @@ android {
     versionName VERSION_NAME
   }
 }
+
+group='com.github.Yatsinar'
 
 dependencies {
   implementation "com.android.support:support-compat:${SUPPORT_PACKAGE_VERSION}"

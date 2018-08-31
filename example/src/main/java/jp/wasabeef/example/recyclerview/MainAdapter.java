@@ -29,7 +29,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
   }
 
   @Override public void onBindViewHolder(ViewHolder holder, int position) {
-    Picasso.with(mContext).load(R.drawable.chip).into(holder.image);
+    new Picasso.Builder(mContext).build().load(R.drawable.chip).into(holder.image);
     holder.text.setText(mDataSet.get(position));
   }
 
