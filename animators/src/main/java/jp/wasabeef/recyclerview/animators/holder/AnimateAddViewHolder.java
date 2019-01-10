@@ -7,6 +7,6 @@ public interface AnimateAddViewHolder {
 
     void preAnimateAddImpl(final RecyclerView.ViewHolder holder);
 
-    void animateAddImpl(final RecyclerView.ViewHolder holder);
+    void animateAddImpl(final RecyclerView.ViewHolder holder, ViewPropertyAnimatorListener listener);
 
 }
