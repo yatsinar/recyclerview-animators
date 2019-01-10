@@ -254,8 +254,6 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
     } else {
       animateRemoveImpl(holder);
     }
-
-    mRemoveAnimations.add(holder);
   }
 
   private void doAnimateAdd(final RecyclerView.ViewHolder holder) {
@@ -264,8 +262,6 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
     } else {
       animateAddImpl(holder);
     }
-
-    mAddAnimations.add(holder);
   }
 
   @Override public boolean animateRemove(final ViewHolder holder) {
@@ -687,6 +683,7 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
 
     @Override public void onAnimationStart(View view) {
       dispatchAddStarting(mViewHolder);
+      mAddAnimations.add(mViewHolder);
     }
 
     @Override public void onAnimationCancel(View view) {
@@ -711,6 +708,7 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
 
     @Override public void onAnimationStart(View view) {
       dispatchRemoveStarting(mViewHolder);
+      mRemoveAnimations.add(mViewHolder);
     }
 
     @Override public void onAnimationCancel(View view) {
