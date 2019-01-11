@@ -9,4 +9,6 @@ public interface AnimateRemoveViewHolder {
 
     void animateRemoveImpl(final RecyclerView.ViewHolder holder, ViewPropertyAnimatorListener listener);
 
+    void endRemoveAnimation(final RecyclerView.ViewHolder holder);
+
 }

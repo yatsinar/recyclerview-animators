@@ -466,6 +466,15 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
     final View view = item.itemView;
     // this will trigger end callback which should set properties to their target values.
     ViewCompat.animate(view).cancel();
+
+    if (item instanceof AnimateAddViewHolder) {
+      ((AnimateAddViewHolder) item).endAddAnimation(item);
+    } else if (item instanceof AnimateChangeViewHolder) {
+      ((AnimateChangeViewHolder) item).endChangeAnimation(item);
+    } else if (item instanceof AnimateRemoveViewHolder) {
+      ((AnimateRemoveViewHolder) item).endRemoveAnimation(item);
+    }
+
     // TODO if some other animations are chained to end, how do we cancel them as well?
     for (int i = mPendingMoves.size() - 1; i >= 0; i--) {
       MoveInfo moveInfo = mPendingMoves.get(i);
