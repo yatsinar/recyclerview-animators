@@ -233,9 +233,8 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
 
     if (holder instanceof AnimateRemoveViewHolder) {
       ((AnimateRemoveViewHolder) holder).preAnimateRemoveImpl(holder);
-    } else {
-      preAnimateRemoveImpl(holder);
     }
+    preAnimateRemoveImpl(holder);
   }
 
   private void preAnimateAdd(final RecyclerView.ViewHolder holder) {
@@ -243,25 +242,22 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
 
     if (holder instanceof AnimateAddViewHolder) {
       ((AnimateAddViewHolder) holder).preAnimateAddImpl(holder);
-    } else {
-      preAnimateAddImpl(holder);
     }
+    preAnimateAddImpl(holder);
   }
 
   private void doAnimateRemove(final RecyclerView.ViewHolder holder) {
     if (holder instanceof AnimateRemoveViewHolder) {
       ((AnimateRemoveViewHolder) holder).animateRemoveImpl(holder, new DefaultRemoveVpaListener(holder));
-    } else {
-      animateRemoveImpl(holder);
     }
+    animateRemoveImpl(holder);
   }
 
   private void doAnimateAdd(final RecyclerView.ViewHolder holder) {
     if (holder instanceof AnimateAddViewHolder) {
       ((AnimateAddViewHolder) holder).animateAddImpl(holder, new DefaultAddVpaListener(holder));
-    } else {
-      animateAddImpl(holder);
     }
+    animateAddImpl(holder);
   }
 
   @Override public boolean animateRemove(final ViewHolder holder) {
