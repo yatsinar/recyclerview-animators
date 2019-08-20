@@ -5,7 +5,13 @@ Thumbs.db
 .gradle
 
 # Intellij project files
-.idea
+.idea/*
+!.idea/codeStyles/
+!.idea/codeStyleSettings.xml
+!.idea/inspectionProfiles/
+!.idea/vcs.xml
+!.idea/runConfigurations.xml
+!.idea/encodings.xml
 *.iml
 
 # generated files
