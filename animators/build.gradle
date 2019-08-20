@@ -3,20 +3,15 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 android {
   compileSdkVersion COMPILE_SDK_VERSION as int
-  buildToolsVersion BUILD_TOOLS_VERSION
 
   defaultConfig {
     minSdkVersion MIN_SDK_VERSION as int
     targetSdkVersion TARGET_SDK_VERSION as int
-    versionCode "git rev-list origin/master --count".execute().text.toInteger()
-    versionName VERSION_NAME
   }
 }
 
 group='com.github.Yatsinar'
 
 dependencies {
-  implementation "com.android.support:support-compat:${SUPPORT_PACKAGE_VERSION}"
-  implementation "com.android.support:support-core-ui:${SUPPORT_PACKAGE_VERSION}"
-  implementation "com.android.support:recyclerview-v7:${SUPPORT_PACKAGE_VERSION}"
+  implementation "androidx.recyclerview:recyclerview:1.0.0"
 }

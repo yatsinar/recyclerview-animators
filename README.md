@@ -16,8 +16,8 @@ Please feel free to use this.
 
 # Features
 
-* Animate addition and removal of `ItemAnimator`
-* Appearance animations for items in `RecyclerView.Adapter`
+* Animate addition and removal of [`ItemAnimator`](#itemanimator-1)
+* Appearance animations for items in [`RecyclerView.Adapter`](#recyclerviewadapter)
 
 # Demo
 
@@ -26,10 +26,6 @@ Please feel free to use this.
 
 ### Adapters
 <img src="art/demo4.gif" width="32%"> <img src="art/demo5.gif" width="32%">
-
-# Samples
-
-<a href="https://play.google.com/store/apps/details?id=jp.wasabeef.example.recyclerview"><img src="http://www.android.com/images/brand/get_it_on_play_logo_large.png"/></a>
 
 # How do I use it?
 
@@ -41,7 +37,7 @@ On your module's `build.gradle` file add this implementation statement to the `d
 
 ```groovy
 dependencies {
-  implementation 'jp.wasabeef:recyclerview-animators:2.3.0'
+  implementation 'jp.wasabeef:recyclerview-animators:3.x.x'
 }
 ```
 
@@ -49,8 +45,8 @@ Also make sure that the `repositories` section includes not only jcenter but als
 
 ```
 repositories {
-  jcenter()
   google()
+  jcenter()
 }
 ```
 
@@ -59,15 +55,14 @@ repositories {
 
 Set RecyclerView ItemAnimator.
 
-```java
-RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
-recyclerView.setItemAnimator(new SlideInLeftAnimator());
+```kotlin
+val recyclerView = findViewById<RecyclerView>(R.id.list)
+recyclerView.itemAnimator = SlideInLeftAnimator()
 ```
 
-```java
-RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
-SlideInUpAnimator animator = new SlideInUpAnimator(new OvershootInterpolator(1f));
-recyclerView.setItemAnimator(animator);
+```kotlin
+val recyclerView = findViewById<RecyclerView>(R.id.list)
+recyclerView.itemAnimator = SlideInUpAnimator(OvershootInterpolator(1f))
 ```
 
 ## Step 2
@@ -82,15 +77,15 @@ Please use the following
 > If you want your animations to work, do not rely on calling `notifyDataSetChanged()`; 
 > as it is the RecyclerView's default behavior, animations are not triggered to start inside this method.
 
-```java
-public void remove(int position) {
-  mDataSet.remove(position);
-  notifyItemRemoved(position);
+```kotlin
+fun remove(position: Int) {
+  dataSet.removeAt(position)
+  notifyItemRemoved(position)
 }
 
-public void add(String text, int position) {
-  mDataSet.add(position, text);
-  notifyItemInserted(position);
+fun add(text: String, position: Int) {
+  dataSet.add(position, text)
+  notifyItemInserted(position)
 }
 ```
 
@@ -98,22 +93,23 @@ public void add(String text, int position) {
 
 You can change the durations.
 
-```java
-recyclerView.getItemAnimator().setAddDuration(1000);
-recyclerView.getItemAnimator().setRemoveDuration(1000);
-recyclerView.getItemAnimator().setMoveDuration(1000);
-recyclerView.getItemAnimator().setChangeDuration(1000);
+```kotlin
+recyclerView.itemAnimator?.apply {
+  addDuration = 1000
+  removeDuration = 100
+  moveDuration = 1000
+  changeDuration = 100
+}
 ```
 
 ### Advanced Step 4
 
 Change the interpolator.
 
-```java
-SlideInLeftAnimator animator = new SlideInLeftAnimator();
-animator.setInterpolator(new OvershootInterpolator());
-// or recyclerView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
-recyclerView.setItemAnimator(animator);
+```kotlin
+recyclerView.itemAnimator = SlideInLeftAnimator().apply {
+  setInterpolator(OvershootInterpolator())
+}
 ```
 
 ### Advanced Step 5
@@ -121,41 +117,34 @@ recyclerView.setItemAnimator(animator);
 By implementing AnimateViewHolder, you can override preset animation.
 So, custom animation can be set depending on view holder.
 
-```java
-static class MyViewHolder extends RecyclerView.ViewHolder implements AnimateViewHolder {
-  public MyViewHolder(View itemView) {
-    super(itemView);
+```kotlin
+class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), AnimateViewHolder {
+
+  override fun preAnimateRemoveImpl(holder: RecyclerView.ViewHolder) {
+    // do something
   }
 
-  @Override
-  public void preAnimateRemoveImpl(RecyclerView.ViewHolder holder) {
-
+  override fun animateRemoveImpl(holder: RecyclerView.ViewHolder, listener: ViewPropertyAnimatorListener) {
+    ViewCompat.animate(itemView).apply {
+      translationY(-itemView.height * 0.3f)
+      alpha(0f)
+      duration = 300
+      setListener(listener)
+    }.start()
   }
 
-  @Override
-  public void animateRemoveImpl(RecyclerView.ViewHolder holder, ViewPropertyAnimatorListener listener) {
-    ViewCompat.animate(itemView)
-          .translationY(-itemView.getHeight() * 0.3f)
-          .alpha(0)
-          .setDuration(300)
-          .setListener(listener)
-          .start();
+  override fun preAnimateAddImpl(holder: RecyclerView.ViewHolder) {
+    ViewCompat.setTranslationY(itemView, -itemView.height * 0.3f)
+    ViewCompat.setAlpha(itemView, 0f)
   }
 
-  @Override
-  public void preAnimateAddImpl(RecyclerView.ViewHolder holder) {
-    ViewCompat.setTranslationY(itemView, -itemView.getHeight() * 0.3f);
-    ViewCompat.setAlpha(itemView, 0);
-  }
-
-  @Override
-  public void animateAddImpl(RecyclerView.ViewHolder holder, ViewPropertyAnimatorListener listener) {
-    ViewCompat.animate(itemView)
-          .translationY(0)
-          .alpha(1)
-          .setDuration(300)
-          .setListener(listener)
-          .start();
+  override fun animateAddImpl(holder: RecyclerView.ViewHolder, listener: ViewPropertyAnimatorListener) {
+    ViewCompat.animate(itemView).apply {
+      translationY(0f)
+      alpha(1f)
+      duration = 300
+      setListener(listener)
+    }.start()
   }
 }
 ```
@@ -187,53 +176,31 @@ static class MyViewHolder extends RecyclerView.ViewHolder implements AnimateView
 
 Set RecyclerView ItemAnimator.
 
-```java
-RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
-MyAdapter adapter = new MyAdapter();
-recyclerView.setAdapter(new AlphaInAnimationAdapter(adapter));
+```kotlin
+val recyclerView = findViewById<RecyclerView>(R.id.list)
+recyclerView.adapter = AlphaInAnimationAdapter(MyAdapter())
 ```
 
 ### Advanced Step 2
 
-Change the durations.
-
-```java
-MyAdapter adapter = new MyAdapter();
-AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adapter);
-alphaAdapter.setDuration(1000);
-recyclerView.setAdapter(alphaAdapter);
+```kotlin
+recyclerView.adapter = AlphaInAnimationAdapter(MyAdapter()).apply {
+  // Change the durations.
+  setDuration(1000)
+  // Change the interpolator.
+  setInterpolator(vershootInterpolator())
+  // Disable the first scroll mode.
+  setFirstOnly(false)
+}
 ```
 
 ### Advanced Step 3
 
-Change the interpolator.
-
-```java
-MyAdapter adapter = new MyAdapter();
-AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adapter);
-alphaAdapter.setInterpolator(new OvershootInterpolator());
-recyclerView.setAdapter(alphaAdapter);
-```
-
-### Advanced Step 4
-
-Disable the first scroll mode.
-
-```java
-MyAdapter adapter = new MyAdapter();
-AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adapter);
-alphaAdapter.setFirstOnly(false);
-recyclerView.setAdapter(alphaAdapter);
-```
-
-### Advanced Step 5
-
 Multiple Animations
 
-```java
-MyAdapter adapter = new MyAdapter();
-AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adapter);
-recyclerView.setAdapter(new ScaleInAnimationAdapter(alphaAdapter));
+```kotlin
+val alphaAdapter = AlphaInAnimationAdapter(MyAdapter())
+recyclerView.adapter = ScaleInAnimationAdapter(alphaAdapter)
 ```
 
 ### Adapters
