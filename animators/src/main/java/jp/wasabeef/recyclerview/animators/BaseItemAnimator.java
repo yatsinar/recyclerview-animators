@@ -689,7 +689,10 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
     }
 
     @Override public void onAnimationStart(View view) {
-      dispatchAddStarting(mViewHolder);
+      //Might have been dispatched already
+      if (!mAddAnimations.contains(mViewHolder)) {
+        dispatchAddStarting(mViewHolder);
+      }
       mAddAnimations.add(mViewHolder);
     }
 
@@ -698,9 +701,12 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
     }
 
     @Override public void onAnimationEnd(View view) {
-      ViewHelper.clear(view);
-      dispatchAddFinished(mViewHolder);
       mAddAnimations.remove(mViewHolder);
+      //Might still have another animation
+      if (!mAddAnimations.contains(mViewHolder)) {
+        dispatchAddFinished(mViewHolder);
+      }
+      ViewHelper.clear(view);
       dispatchFinishedWhenDone();
     }
   }
@@ -714,7 +720,10 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
     }
 
     @Override public void onAnimationStart(View view) {
-      dispatchRemoveStarting(mViewHolder);
+      //Might have been dispatched already
+      if (!mRemoveAnimations.contains(mViewHolder)) {
+        dispatchRemoveStarting(mViewHolder);
+      }
       mRemoveAnimations.add(mViewHolder);
     }
 
@@ -724,8 +733,11 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
 
     @Override public void onAnimationEnd(View view) {
       ViewHelper.clear(view);
-      dispatchRemoveFinished(mViewHolder);
       mRemoveAnimations.remove(mViewHolder);
+
+      if (!mRemoveAnimations.contains(mViewHolder)) {
+        dispatchRemoveFinished(mViewHolder);
+      }
       dispatchFinishedWhenDone();
     }
   }
